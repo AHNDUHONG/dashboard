@@ -2,6 +2,9 @@ package restapi.prac.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class Post {
 
@@ -14,6 +17,9 @@ public class Post {
 
     @Column(nullable = false, length = 5000)
     private String content;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     // 기본 생성자
     public Post() {}
@@ -47,5 +53,13 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }
