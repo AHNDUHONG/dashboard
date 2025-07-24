@@ -19,6 +19,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    // 댓글 작성
+    @PostMapping
+    public ResponseEntity<Comment> createComment(@PathVariable Long postId,
+                                                 @RequestBody Comment comment) {
+        Comment created = commentService.createComment(postId, comment);
+        return ResponseEntity.ok(created);
+    }
+
     // 게시글에 속한 댓글 목록 조회
     @GetMapping
     public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
