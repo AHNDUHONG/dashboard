@@ -55,7 +55,22 @@
 
 ## ⚙️ 설치 및 실행
 
+
 ### 1. 리포지터리 클론
 ```bash
 git clone https://github.com/YourUsername/YourRepoName.git
 cd YourRepoName
+```
+
+### 2. 백엔드 실행
+```bash
+cd prac
+./gradlew bootRun
+```
+
+### 3. 프런트엔드 실행
+```bash
+cd react_p
+npm install
+npm start
+```

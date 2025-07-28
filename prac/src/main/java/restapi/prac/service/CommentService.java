@@ -31,8 +31,8 @@ public class CommentService {
     public Comment createComment(Long postId, Comment comment) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("게시글을 찾을 수 없습니다."));
-        post.getComments().add(comment);
         comment.setPost(post);
+        post.getComments().add(comment);    // 관계 매핑을 위해 저장 전 리스트에 추가
         return commentRepository.save(comment);
     }
 
