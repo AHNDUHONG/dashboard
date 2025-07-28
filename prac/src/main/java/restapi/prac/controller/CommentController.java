@@ -3,6 +3,8 @@ package restapi.prac.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import restapi.prac.dto.comment.CommentRequest;
+import restapi.prac.dto.comment.CommentResponse;
 import restapi.prac.model.Comment;
 import restapi.prac.service.CommentService;
 
@@ -21,37 +23,36 @@ public class CommentController {
 
     // 댓글 작성
     @PostMapping
-    public ResponseEntity<Comment> createComment(@PathVariable Long postId,
-                                                 @RequestBody Comment comment) {
-        Comment created = commentService.createComment(postId, comment);
+    public ResponseEntity<CommentResponse> createComment(@PathVariable Long postId,
+                                                         @RequestBody CommentRequest request) {
+        CommentResponse created = commentService.createComment(postId, request);
         return ResponseEntity.ok(created);
     }
 
     // 게시글에 속한 댓글 목록 조회
     @GetMapping
-    public ResponseEntity<List<Comment>> getComments(@PathVariable Long postId) {
-        List<Comment> comments = commentService.getCommentsByPostId(postId);
+    public ResponseEntity<List<CommentResponse>> getComments(@PathVariable Long postId) {
+        List<CommentResponse> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     // 댓글 단일 조회
     @GetMapping("/{commentId}")
-    public ResponseEntity<Comment> getComment(@PathVariable Long postId,
+    public ResponseEntity<CommentResponse> getComment(@PathVariable Long postId,
                                               @PathVariable Long commentId) {
-        Optional<Comment> comment = commentService.getComment(commentId);
-        return comment.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return commentService.getComment(commentId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // 댓글 수정
     @PutMapping("/{commentId}")
-    public ResponseEntity<Comment> updateComment(@PathVariable Long postId,
+    public ResponseEntity<CommentResponse> updateComment(@PathVariable Long postId,
                                                  @PathVariable Long commentId,
-                                                 @RequestBody Comment updateRequest) {
-        Optional<Comment> updated = commentService.updateComment(commentId,
-                updateRequest.getContent());
-        return updated.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                                                 @RequestBody CommentRequest request) {
+        return commentService.updateComment(commentId, request)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     // 댓글 삭제

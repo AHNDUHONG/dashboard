@@ -3,6 +3,7 @@ package restapi.prac.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,9 @@ public class Post {
     @Column(nullable = false, length = 5000)
     private String content;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)  //JPA 일대다(1:N) 관계 설정
     @JsonManagedReference       // Post, Comment 관계 직렬화 방지 어노테이션
     private List<Comment> comments = new ArrayList<>();
@@ -30,6 +34,11 @@ public class Post {
     public Post(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
 
     // getter, setter
