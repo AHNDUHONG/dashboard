@@ -19,6 +19,7 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    //게시글 목록
     @GetMapping
     public ResponseEntity<Page<Post>> listPost(@RequestParam(defaultValue = "0") int page,
                                                @RequestParam(defaultValue = "10") int size) {
@@ -27,24 +28,28 @@ public class PostController {
         return ResponseEntity.ok().body(posts);
     }
 
+    //게시글 조회
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPost(@PathVariable Long id) {
         Optional<Post> postOpt = postService.getPost(id);
         return postOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    //게시글 작성
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         Post createPost = postService.createPost(post);
         return ResponseEntity.ok(createPost);
     }
 
+    //게시글 수정
     @PutMapping("/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post updatePost){
         Optional<Post> updated = postService.updatePost(id, updatePost);
         return updated.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    //게시글 삭제
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id) {
         boolean deleted = postService.deletePost(id);

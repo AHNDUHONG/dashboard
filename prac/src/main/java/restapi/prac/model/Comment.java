@@ -1,5 +1,6 @@
 package restapi.prac.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -12,8 +13,9 @@ public class Comment {
     private Long id;
 
     // 어떤 게시글에 속하는 댓글인지 명시
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false)    //JPA 다대일(N:1) 관계를 표현
     @JoinColumn(name = "post_id")
+    @JsonBackReference  // Post, Comment 관계 직렬화 방지
     private Post post;
 
     @Column(nullable = false, length = 1000)
@@ -29,7 +31,13 @@ public class Comment {
     public Comment(Post post, String content) {
         this.post = post;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 
     // getter, setter
