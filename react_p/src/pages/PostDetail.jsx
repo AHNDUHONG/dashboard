@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import CommentSection from "../components/CommentSection";
 import axios from "axios";
 
 export default function PostDetail() {
@@ -61,6 +62,8 @@ export default function PostDetail() {
                     삭제하기
                 </button>
             </div>
+
+            <CommentSection postId={id} />
 
             <div className="mt-10">
                 <Link
