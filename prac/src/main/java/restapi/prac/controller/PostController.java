@@ -1,5 +1,6 @@
 package restapi.prac.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,14 +38,14 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody PostRequest request) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest request) {
         return ResponseEntity.ok(postService.createPost(request));
     }
 
     // 게시글 수정
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
-                                                   @RequestBody PostRequest request) {
+                                                   @RequestBody @Valid PostRequest request) {
         return postService.updatePost(id, request)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

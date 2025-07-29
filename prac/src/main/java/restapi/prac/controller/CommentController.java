@@ -1,6 +1,7 @@
 package restapi.prac.controller;
 
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restapi.prac.dto.comment.CommentRequest;
@@ -24,7 +25,7 @@ public class CommentController {
     // 댓글 작성
     @PostMapping
     public ResponseEntity<CommentResponse> createComment(@PathVariable Long postId,
-                                                         @RequestBody CommentRequest request) {
+                                                         @RequestBody @Valid CommentRequest request) {
         CommentResponse created = commentService.createComment(postId, request);
         return ResponseEntity.ok(created);
     }
@@ -49,7 +50,7 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponse> updateComment(@PathVariable Long postId,
                                                  @PathVariable Long commentId,
-                                                 @RequestBody CommentRequest request) {
+                                                 @RequestBody @Valid CommentRequest request) {
         return commentService.updateComment(commentId, request)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

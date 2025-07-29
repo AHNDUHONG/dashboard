@@ -26,10 +26,16 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// ✨ Bean Validation (JSR-380, Jakarta Validation)
+	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
+	// ✨ Hibernate Validator (Spring Boot에서 가장 널리 사용)
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2' // (테스트용 DB)
 	annotationProcessor 'org.projectlombok:lombok'
+	// ✨ Annotation processor (선택이지만 IDE 인식에 도움)
+	annotationProcessor 'org.hibernate.validator:hibernate-validator-annotation-processor:8.0.1.Final'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

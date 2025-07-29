@@ -16,7 +16,20 @@ export default function CreatePost() {
 
     const onClickSubmit = (e) => {
         e.preventDefault(); // 폼 submit 기본 동작 막기
-        axios.post(`${process.env.REACT_APP_API_URL}/posts`, formData)
+
+        // 내용이 공백이면 사전 차단
+        const trimmedTitle = formData.title.trim();
+        const trimmedContent = formData.content.trim();
+
+        if (!trimmedTitle || !trimmedContent) {
+            alert("제목과 내용을 모두 입력해주세요.");
+            return;
+        }
+
+        axios.post(`${process.env.REACT_APP_API_URL}/posts`, {
+            title: trimmedTitle,
+            content: trimmedContent,
+        })
             .then(res => {
                 console.log('게시글 등록 성공:', res.data);
             })

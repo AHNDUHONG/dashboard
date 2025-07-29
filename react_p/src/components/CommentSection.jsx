@@ -14,13 +14,20 @@ export default function CommentSection({ postId }) {
     }, [postId]);
 
     const handlePost = () => {
-        if (newComment.trim() === "") return;
+        const trimmed = newComment.trim();
+        if (trimmed === "") {
+            alert("댓글을 입력해주세요.");
+            return;
+        }
         postComment(postId, newComment)
             .then((saved) => {
                 setComments([...comments, saved]);
                 setNewComment("");
             })
-            .catch((err) => console.error("댓글 작성에 실패하였습니다.", err));
+            .catch((err) => {
+                console.error("댓글 작성에 실패하였습니다.", err);
+                alert("댓글 작성에 실패하였습니다.");
+            });
     };
 
     const handleEdit = (id, content) => {
@@ -29,11 +36,17 @@ export default function CommentSection({ postId }) {
     }
 
     const handleUpdate = (id) => {
-        if (editingContent.trim() === "") return;
-        updateComment(postId, id, editingContent)
+        const trimmed = editingContent.trim();
+        if (!trimmed) {
+            alert("댓글 내용은 공백일 수 없습니다.");
+            return;
+        }
+
+        updateComment(postId, id, trimmed)
             .then((updated) => {
                 setComments(comments.map(c => (c.id === id ? updated : c)));
                 setEditingId(null);
+                setEditingContent("");  // 입력란 초기화
             })
             .catch((err) => console.error("댓글 수정에 실패하였습니다."));
     }

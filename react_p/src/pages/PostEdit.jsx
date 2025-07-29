@@ -34,8 +34,19 @@ export default function PostEdit() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const trimmedTitle = post.title.trim();
+        const trimmedContent = post.content.trim();
+
+        if (!trimmedTitle || !trimmedContent) {
+            alert("제목과 내용은 공백일 수 없습니다.");
+            return;
+        }
+
         axios
-            .put(`${process.env.REACT_APP_API_URL}/posts/${id}`, post)
+            .put(`${process.env.REACT_APP_API_URL}/posts/${id}`, {
+                title: trimmedTitle,
+                content: trimmedContent,
+            })
             .then((res) => {
                 alert("게시글이 수정되었습니다.");
                 navigate(`/post/${id}`);
