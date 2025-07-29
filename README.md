@@ -65,13 +65,13 @@ cd YourRepoName
 
 ### 2. 백엔드 실행
 ```bash
-cd prac
+cd backend
 ./gradlew bootRun
 ```
 
 ### 3. 프런트엔드 실행
 ```bash
-cd react_p
+cd frontend
 npm install
 npm start
 ```
