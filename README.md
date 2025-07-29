@@ -26,9 +26,9 @@
 
 - **게시글 CRUD**  
   - 글 작성(Create), 목록 조회(Read), 수정(Update), 삭제(Delete)
-- **댓글 기능** (구현중)  
+- **댓글 기능** (구현)  
   - 각 게시글에 댓글 작성·수정·삭제
-- **페이징 & 검색** (구현중)  
+- **페이징 & 검색** (구현중)
   - 목록 페이지네이션 및 키워드 검색
 - **사용자 인증** (구현중)  
   - JWT 기반 로그인/로그아웃
@@ -43,12 +43,13 @@
 | -------------- | ------------------------------------------------------------ |
 | **UI**         | React, React DOM (Create React App)                          |
 | **상태 관리**   | React Hooks (`useState`, `useReducer`), Context API          |
-| **라우팅**      | React Router DOM                                             |
+| **라우팅**      | React Router DOM(v7.6.3)                                      |
 | **HTTP 클라이언트** | Axios                                                      |
+| **스타일링**     | TailwindCSS(v3.4.1), MUI, Emotion                            |
 | **서버**        | Java 21, Spring Boot 3.4.5 (Web, Data JPA)                   |
 | **데이터베이스** | MySQL (MySQL Connector/J), Hibernate (JPA)                   |
 | **테스트**      | React Testing Library, JUnit, Spring Boot Test               |
-| **인증**        | 미구현                                                       |
+| **인증**        | 미구현 (추후 JWT 기반 예정)                                       |
 | **배포**        | 미구현                                                       |
 
 ---
