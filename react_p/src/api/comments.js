@@ -14,3 +14,17 @@ export const postComment = async (postId, content) => {
     );
     return res.data;
 };
+
+export const updateComment = async (postId, commentId, content) => {
+    const res = await axios.put(
+        `${process.env.REACT_APP_API_URL}/posts/${postId}/comments/${commentId}`,
+        { content }
+    );
+    return res.data;
+};
+
+export const deleteComment = async (postId, commentId) => {
+    await axios.delete(
+        `${process.env.REACT_APP_API_URL}/posts/${postId}/comments/${commentId}`
+    );
+};
