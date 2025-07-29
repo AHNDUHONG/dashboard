@@ -1,7 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 export default function CreatePost() {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         title: '',
         content: ''
@@ -32,9 +36,13 @@ export default function CreatePost() {
         })
             .then(res => {
                 console.log('게시글 등록 성공:', res.data);
+                alert("게시글이 등록되었습니다.");
+                navigate("/");
+                // 상세 페이지로 이동하고 싶다면 navigate(`/post/${res.data.id}`);
             })
             .catch(err => {
                 console.error('게시글 등록 실패:', err);
+                alert("게시글 등록에 실패했습니다.");
             });
     };
 
