@@ -11,8 +11,6 @@ import restapi.prac.dto.post.PostRequest;
 import restapi.prac.dto.post.PostResponse;
 import restapi.prac.service.PostService;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {

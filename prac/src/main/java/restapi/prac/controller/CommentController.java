@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import restapi.prac.dto.comment.CommentRequest;
 import restapi.prac.dto.comment.CommentResponse;
-import restapi.prac.model.Comment;
 import restapi.prac.service.CommentService;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/posts/{postId}/comments")

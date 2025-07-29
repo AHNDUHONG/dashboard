@@ -73,4 +73,8 @@ public class Post {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

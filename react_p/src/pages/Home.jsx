@@ -14,6 +14,7 @@ export default function Home() {
                 params: {
                     page: currentPage - 1,
                     size: postsPerPage,
+                    sort: 'id,DESC'     // 'id' 필드를 기준으로 내림차순 정렬
                 },
             })
             .then((res) => {
