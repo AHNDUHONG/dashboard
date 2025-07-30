@@ -26,6 +26,9 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// Spring Security 및 JWT 라이브러리 추가
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	// ✨ Bean Validation (JSR-380, Jakarta Validation)
 	implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
 	// ✨ Hibernate Validator (Spring Boot에서 가장 널리 사용)
@@ -33,6 +36,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	runtimeOnly 'com.h2database:h2' // (테스트용 DB)
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JSON 파싱용
 	annotationProcessor 'org.projectlombok:lombok'
 	// ✨ Annotation processor (선택이지만 IDE 인식에 도움)
 	annotationProcessor 'org.hibernate.validator:hibernate-validator-annotation-processor:8.0.1.Final'

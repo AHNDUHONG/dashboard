@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import restapi.dash.dto.post.PostRequest;
 import restapi.dash.dto.post.PostResponse;
+import restapi.dash.exception.ResourceNotFoundException;
 import restapi.dash.model.Post;
 import restapi.dash.repository.PostRepository;
 
@@ -37,7 +38,8 @@ public class PostService {
     // 단일 조회
     public Optional<PostResponse> getPost(Long id) {
         return postRepository.findById(id)
-                .map(this::toResponse);
+                .map(this::toResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("게시글을 찾을 수 없습니다."));
     }
 
     // 생성
