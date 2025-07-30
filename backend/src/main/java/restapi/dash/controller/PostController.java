@@ -29,9 +29,7 @@ public class PostController {
     // 게시글 조회
     @GetMapping("/{id}")
     public ResponseEntity<PostResponse> getPost(@PathVariable Long id) {
-        return postService.getPost(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(postService.getPost(id));  // 예외 발생 시 404는 GlobalExceptionHandler가 처리
     }
 
     // 게시글 작성

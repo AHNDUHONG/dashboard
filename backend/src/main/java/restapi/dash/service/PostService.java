@@ -36,7 +36,7 @@ public class PostService {
     }
 
     // 단일 조회
-    public Optional<PostResponse> getPost(Long id) {
+    public PostResponse getPost(Long id) {
         return postRepository.findById(id)
                 .map(this::toResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("게시글을 찾을 수 없습니다."));
