@@ -51,19 +51,21 @@ public class CommentService {
     }
 
     // 댓글 수정
-    public Optional<CommentResponse> updateComment(Long id, CommentRequest request) {
-        return commentRepository.findById(id).map(c -> {
-            c.setContent(request.getContent());
-            return toResponse(commentRepository.save(c));
+    public Optional<CommentResponse> updateComment(Long postId, Long commentId, CommentRequest request) {
+        return commentRepository.findByIdAndPostId(commentId, postId)
+                .map(c -> {
+                    c.setContent(request.getContent());
+                    return toResponse(commentRepository.save(c));
         });
     }
 
     // 댓글 삭제
-    public boolean deleteComment(Long id) {
-        return commentRepository.findById(id).map(c -> {
-            commentRepository.delete(c);
-            return true;
-        }).orElse(false);
+    public boolean deleteComment(Long postId, Long commentId) {
+        return commentRepository.findByIdAndPostId(commentId, postId)
+                .map(c -> {
+                    commentRepository.delete(c);
+                    return true;
+                }).orElse(false);
     }
 
     // 엔티티 → 응답 DTO 변환

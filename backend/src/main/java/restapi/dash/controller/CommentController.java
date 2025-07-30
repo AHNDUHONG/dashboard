@@ -49,7 +49,7 @@ public class CommentController {
     public ResponseEntity<CommentResponse> updateComment(@PathVariable Long postId,
                                                  @PathVariable Long commentId,
                                                  @RequestBody @Valid CommentRequest request) {
-        return commentService.updateComment(commentId, request)
+        return commentService.updateComment(postId, commentId, request)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -58,7 +58,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long postId,
                                               @PathVariable Long commentId) {
-        boolean deleted = commentService.deleteComment(commentId);
+        boolean deleted = commentService.deleteComment(postId, commentId);
         return deleted ? ResponseEntity.ok().build()
                 : ResponseEntity.notFound().build();
     }
