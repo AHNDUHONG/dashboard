@@ -36,6 +36,7 @@ export default function Home() {
         setCurrentPage(pageNumber);
     };
 
+
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">게시글 목록</h1>
