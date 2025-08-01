@@ -24,7 +24,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
         return User.withUsername(user.getUsername())
                 .password(user.getPassword())
-                .roles(user.getRoles()) // "ROLE_USER"
+                .authorities(user.getRoles())
                 .build();
     }
 

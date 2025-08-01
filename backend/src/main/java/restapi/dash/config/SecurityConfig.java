@@ -42,7 +42,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/signup").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll() //게시글 조회 허용
+                        .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll() // 게시글 조회 허용
+                        .requestMatchers(HttpMethod.POST, "/api/posts").authenticated() // 인증 필요
                         .anyRequest().authenticated()
                 )
                 .addFilter(authFilter)

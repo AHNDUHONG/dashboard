@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import restapi.dash.dto.post.PostRequest;
 import restapi.dash.dto.post.PostResponse;
@@ -34,8 +35,9 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest request) {
-        return ResponseEntity.ok(postService.createPost(request));
+    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest request,
+                                                   @AuthenticationPrincipal String username) {
+        return ResponseEntity.ok(postService.createPost(request, username));
     }
 
     // 게시글 수정

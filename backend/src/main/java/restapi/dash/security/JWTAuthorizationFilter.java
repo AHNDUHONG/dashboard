@@ -5,13 +5,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
@@ -40,8 +43,15 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             try {
                 // 2. 토큰 파싱 및 검증
                 String username = jwtUtil.validateAndGetUsername(token);
+
+                // 권한 추출: "ROLE_USER" 문자열 -> GrantedAuthority 리스트로 변환
+                String roles = jwtUtil.getRoles(token);   //JWT에서 roles claim 꺼냄
+                List<SimpleGrantedAuthority> authorities = Arrays.stream(roles.split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .toList();
+
                 UsernamePasswordAuthenticationToken auth =
-                        new UsernamePasswordAuthenticationToken(username, null, Collections.emptyList());
+                        new UsernamePasswordAuthenticationToken(username, null, authorities);
                 auth.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 // 3. 인증 객체 생성해서 SecurityContext에 등록

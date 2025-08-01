@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -49,7 +50,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
         String username = authResult.getName();
-        String token = jwtUtil.createToken(username);
+        String roles = authResult.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .collect(Collectors.joining(""));
+
+        String token = jwtUtil.createToken(username, roles);
         response.addHeader("Authorization", "Bearer " + token);
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
 

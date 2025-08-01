@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import restapi.dash.dto.post.PostRequest;
 import restapi.dash.dto.post.PostResponse;
 import restapi.dash.exception.ResourceNotFoundException;
+import restapi.dash.model.AppUser;
 import restapi.dash.model.Post;
 import restapi.dash.repository.PostRepository;
+import restapi.dash.repository.UserRepository;
 
 import java.util.Optional;
 
@@ -17,9 +19,11 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     // 목록
@@ -43,8 +47,12 @@ public class PostService {
     }
 
     // 생성
-    public PostResponse createPost(PostRequest request) {
+    public PostResponse createPost(PostRequest request, String username) {
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
+
         Post post = new Post(request.getTitle(), request.getContent());
+        post.setAuthor(user);   // 작성자 설정
         return toResponse(postRepository.save(post));
     }
 
@@ -71,7 +79,8 @@ public class PostService {
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
-                post.getCreatedAt()
+                post.getCreatedAt(),
+                post.getAuthor().getUsername() // 작성자 정보 전달
         );
     }
 }

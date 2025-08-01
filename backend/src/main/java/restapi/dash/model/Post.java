@@ -27,6 +27,10 @@ public class Post {
     @JsonManagedReference       // Post, Comment 관계 직렬화 방지 어노테이션
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private AppUser author;
+
     // 기본 생성자
     public Post() {}
 
@@ -76,5 +80,17 @@ public class Post {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public AppUser getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AppUser author) {
+        this.author = author;
     }
 }

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../api/axiosInstance";
 
 export default function Home() {
     const [posts, setPosts] = useState([]);
@@ -9,12 +9,16 @@ export default function Home() {
     const postsPerPage = 10;
 
     const getPostList = () => {
+        const token = localStorage.getItem("token");
         axios
             .get(`${process.env.REACT_APP_API_URL}/posts`, {
                 params: {
                     page: currentPage - 1,
                     size: postsPerPage,
                     sort: 'id,DESC'     // 'id' 필드를 기준으로 내림차순 정렬
+                },
+                headers: {
+                    Authorization:`Bearer ${token}` ,
                 },
             })
             .then((res) => {

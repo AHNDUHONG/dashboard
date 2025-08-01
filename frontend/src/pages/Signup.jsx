@@ -14,7 +14,7 @@ export default function Signup() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/api/auth/signup`, form, {
+            await axios.post(`${process.env.REACT_APP_API_URL}/auth/signup`, form, {
                 withCredentials: true // 쿠키, 헤더 등 인증 포함 요청
             });
             alert('회원가입 성공');

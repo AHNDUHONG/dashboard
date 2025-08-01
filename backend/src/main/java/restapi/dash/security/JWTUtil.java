@@ -17,16 +17,25 @@ public class JWTUtil {
 
     private final long expirationMs = 1000 * 60 * 60;
 
-    public String createToken(String username) {
+    public String createToken(String username, String roles) {
         Date now = new Date();
-        Date expiry = new Date(now.getTime() * expirationMs);
+        Date expiry = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
                 .setSubject(username)
+                .claim("roles", roles)
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .signWith(secretKey)
                 .compact();
+    }
+
+    public String getRoles(String token) {
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", String.class); // JWT에 "roles" claim이 있어야 함
     }
 
     public String validateAndGetUsername(String token) {
