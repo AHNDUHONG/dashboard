@@ -51,9 +51,12 @@ export default function PostEdit() {
                 alert("게시글이 수정되었습니다.");
                 navigate(`/post/${id}`);
             })
-            .catch((err) => {
-                console.error(err);
-                alert("게시글 수정에 실패하였습니다.");
+            .catch(err => {
+                if (err.response?.status === 403) {
+                    alert("작성자만 이 게시글을 수정할 수 있습니다.");
+                } else {
+                    alert("게시글 수정에 실패했습니다.");
+                }
             });
     };
 

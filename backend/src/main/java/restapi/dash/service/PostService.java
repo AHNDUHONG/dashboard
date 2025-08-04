@@ -56,8 +56,11 @@ public class PostService {
     }
 
     // 수정
-    public Optional<PostResponse> updatePost(Long id, PostRequest request) {
-        return postRepository.findById(id).map(post -> {
+    public Optional<PostResponse> updatePost(Long id, PostRequest request, String username) {
+        return postRepository.findById(id).filter(post -> {
+            AppUser author = post.getAuthor();
+            return author != null && author.getUsername().equals(username); // 작성자 검증
+        }).map(post -> {
             post.setTitle(request.getTitle());
             post.setContent(request.getContent());
             return toResponse(postRepository.save(post));

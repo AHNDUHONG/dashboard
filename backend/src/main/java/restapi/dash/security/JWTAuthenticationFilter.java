@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
             return this.getAuthenticationManager().authenticate(authToken);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("로그인 요청 처리 중 오류 발생", e);
         }
     }
 
@@ -50,12 +51,19 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             FilterChain chain,
                                             Authentication authResult) throws IOException {
         String username = authResult.getName();
-        String roles = authResult.getAuthorities().stream()
-                .map(grantedAuthority -> grantedAuthority.getAuthority())
-                .collect(Collectors.joining(""));
 
+        // 콤마(,)로 권한 연결
+        String roles = authResult.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        // JWT 생성
         String token = jwtUtil.createToken(username, roles);
+
+        // 응답 헤더에 토큰 설정
         response.addHeader("Authorization", "Bearer " + token);
+
+        // CORS 대응용: 클라이언트에서 Authorization 헤더를 읽을 수 있도록
         response.addHeader("Access-Control-Expose-Headers", "Authorization");
 
     }

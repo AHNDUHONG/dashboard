@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import restapi.dash.dto.post.PostRequest;
 import restapi.dash.dto.post.PostResponse;
@@ -35,18 +36,19 @@ public class PostController {
 
     // 게시글 작성
     @PostMapping
-    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest request,
-                                                   @AuthenticationPrincipal String username) {
+    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.ok(postService.createPost(request, username));
     }
 
     // 게시글 수정
     @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePost(@PathVariable Long id,
-                                                   @RequestBody @Valid PostRequest request) {
-        return postService.updatePost(id, request)
+                                                   @RequestBody @Valid PostRequest request,
+                                                   @AuthenticationPrincipal String username) {
+        return postService.updatePost(id, request, username)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.status(403).build());
     }
 
     // 게시글 삭제

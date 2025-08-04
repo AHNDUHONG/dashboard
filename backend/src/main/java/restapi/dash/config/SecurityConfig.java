@@ -44,10 +44,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/login", "/api/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/posts/**").permitAll() // 게시글 조회 허용
                         .requestMatchers(HttpMethod.POST, "/api/posts").authenticated() // 인증 필요
+                        .requestMatchers(HttpMethod.PUT, "/api/posts/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/api/posts/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .addFilter(authFilter)
-                .addFilterAfter(authorizationFilter, JWTAuthenticationFilter.class);
+                .addFilterBefore(authorizationFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
