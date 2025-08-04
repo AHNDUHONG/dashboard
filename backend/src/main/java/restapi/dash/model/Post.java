@@ -35,9 +35,10 @@ public class Post {
     public Post() {}
 
     // 생성자
-    public Post(String title, String content) {
+    public Post(String title, String content, AppUser author) {
         this.title = title;
         this.content = content;
+        this.author = author;
     }
 
     @PrePersist

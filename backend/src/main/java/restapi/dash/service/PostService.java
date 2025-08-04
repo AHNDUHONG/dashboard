@@ -51,8 +51,7 @@ public class PostService {
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 사용자입니다."));
 
-        Post post = new Post(request.getTitle(), request.getContent());
-        post.setAuthor(user);   // 작성자 설정
+        Post post = new Post(request.getTitle(), request.getContent(), user); // 작성자 포함된 생성자 사용
         return toResponse(postRepository.save(post));
     }
 
@@ -75,12 +74,14 @@ public class PostService {
 
     // 변환 메서드
     private PostResponse toResponse(Post post) {
+        String authorUsername = post.getAuthor() != null ? post.getAuthor().getUsername() : "알 수 없음";
+
         return new PostResponse(
                 post.getId(),
                 post.getTitle(),
                 post.getContent(),
                 post.getCreatedAt(),
-                post.getAuthor().getUsername() // 작성자 정보 전달
+                authorUsername // 작성자 정보 전달
         );
     }
 }
