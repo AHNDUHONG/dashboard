@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import CommentSection from "../components/CommentSection";
-import axios from "axios";
+import axios from "../api/axiosInstance";
 
 export default function PostDetail() {
     const { id } = useParams();
@@ -37,8 +37,11 @@ export default function PostDetail() {
                 navigate("/");
             })
             .catch((err) => {
-                console.error(err);
-                alert("삭제 중 오류가 발생했습니다.");
+                if (err.response?.status === 403) {
+                    alert("작성자만 삭제할 수 있습니다.");
+                } else {
+                    alert("삭제가 실패하였습니다..");
+                }
             });
     };
 

@@ -22,7 +22,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     public JWTAuthorizationFilter(JWTUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        System.out.println("🛠️ JWTAuthorizationFilter 생성됨");
     }
 
     @Override
@@ -39,7 +38,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 // 1. 클라이언트 요청 헤더에서 Authorization: Bearer <JWT> 읽고
         String header = request.getHeader("Authorization");
-        System.out.println("🛠️ [2] Authorization 헤더 = " + header);
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
             try {
@@ -57,8 +55,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 auth.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
 
-                System.out.println("✅ JWT 필터 통과: 사용자 = " + username);
-                System.out.println("✅ 권한 목록 = " + authorities);
 
                 // 3. 인증 객체 생성해서 SecurityContext에 등록
                 SecurityContextHolder.getContext().setAuthentication(auth);

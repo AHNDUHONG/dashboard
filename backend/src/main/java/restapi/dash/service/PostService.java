@@ -68,11 +68,21 @@ public class PostService {
     }
 
     // 삭제
-    public boolean deletePost(Long id) {
-        return postRepository.findById(id).map(post -> {
-            postRepository.delete(post);
-            return true;
-        }).orElse(false);
+    public boolean deletePost(Long id, String username) {
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isEmpty()) return false;
+
+        Post post = optionalPost.get();
+
+        // 작성자 정보가 없으면 삭제 불가
+        if (post.getAuthor() == null) return false;
+
+
+        // 작성자가 아닌 경우 삭제 불가
+        if (!post.getAuthor().getUsername().equals(username)) return false;
+
+        postRepository.delete(post);
+        return true;
     }
 
     // 변환 메서드

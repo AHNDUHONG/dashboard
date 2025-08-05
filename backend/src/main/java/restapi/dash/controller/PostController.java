@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,8 +54,10 @@ public class PostController {
 
     // 게시글 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        return postService.deletePost(id) ?
-                ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deletePost(@PathVariable Long id,
+                                           @AuthenticationPrincipal String username) {
+        boolean deleted = postService.deletePost(id, username);
+        return deleted ? ResponseEntity.ok().build()
+                : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }
