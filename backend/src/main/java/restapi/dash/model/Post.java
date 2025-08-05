@@ -23,6 +23,9 @@ public class Post {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private int views = 0;
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)  //JPA 일대다(1:N) 관계 설정
     @JsonManagedReference       // Post, Comment 관계 직렬화 방지 어노테이션
     private List<Comment> comments = new ArrayList<>();
@@ -44,6 +47,14 @@ public class Post {
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    public void incrementViews() {
+        this.views++;
+    }
+
+    public String getAuthorName() {
+        return author != null ? author.getUsername() : "알 수 없음";
     }
 
     // getter, setter
@@ -94,4 +105,8 @@ public class Post {
     public void setAuthor(AppUser author) {
         this.author = author;
     }
+
+    public int getViews() {return views;}
+
+    public void setViews(int views) {this.views = views;}
 }

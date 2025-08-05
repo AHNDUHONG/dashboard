@@ -54,7 +54,21 @@ export default function Home() {
                         <h2 className="text-lg font-semibold text-indigo-600 hover:underline mb-2">
                             <Link to={`/post/${post.id}`}>{post.title}</Link>
                         </h2>
+
+                        {/* 게시글 본문 (간략히 보여줌) */}
                         <p className="text-sm text-gray-700 dark:text-gray-300">{post.content}</p>
+
+                        {/* 추가 정보: 작성자, 날짜, 조회수 */}
+                        <div className=" text-xs text-right text-gray-500 dark:text-gray-400 mt-2">
+                            작성자: {post.authorUsername} ·{" "}
+                            {new Date(post.createdAt).toLocaleDateString("ko-KR", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                            })} · 조회수: {post.views}
+                        </div>
                     </div>
                 ))}
             </div>

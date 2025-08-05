@@ -10,15 +10,17 @@ public class PostResponse {
     private String content;
     private LocalDateTime createdAt;
     private String authorUsername;
+    private int views;
 
     public PostResponse() {}
 
-    public PostResponse(Long id, String title, String content, LocalDateTime createdAt, String authorUsername) {
+    public PostResponse(Long id, String title, String content, LocalDateTime createdAt, String authorUsername, int views) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;
         this.authorUsername = authorUsername;
+        this.views = views;
     }
 
     public Long getId() {
@@ -38,4 +40,6 @@ public class PostResponse {
     }
 
     public String getAuthorUsername() { return authorUsername; }
+
+    public int getViews() { return views; }
 }

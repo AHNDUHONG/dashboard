@@ -94,7 +94,8 @@ public class PostService {
                 post.getTitle(),
                 post.getContent(),
                 post.getCreatedAt(),
-                authorUsername // 작성자 정보 전달
+                authorUsername, // 작성자 정보 전달
+                post.getViews()
         );
     }
 }
