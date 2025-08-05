@@ -33,12 +33,6 @@ export default function App() {
             <CssBaseline />
             <Router>
                     <NavBar />
-                    <div style={{ padding: '2rem' }}>
-                        <Button variant="contained" onClick={toggleTheme}>
-                            Toggle {mode === 'light' ? 'Dark' : 'Light'} Mode
-                        </Button>
-                    </div>
-
                     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100">
                         <div className="max-w-4xl mx-auto px-4 py-8">
                             <Routes>
