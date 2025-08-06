@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import restapi.dash.dto.post.PostRequest;
 import restapi.dash.dto.post.PostResponse;
 import restapi.dash.exception.ResourceNotFoundException;
@@ -27,7 +28,7 @@ public class PostService {
     }
 
     // 목록
-    public Page<PostResponse> getPosts(Pageable pageable) {
+    public Page<PostResponse> getPosts(Pageable pageable, String keyword) {
         // 정렬 기준 강제 적용: createdAt 기준 내림차순
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
@@ -35,15 +36,28 @@ public class PostService {
                 Sort.by(Sort.Direction.DESC, "createdAt")
         );
 
-        return postRepository.findAll(sortedPageable)
-                                .map(this::toResponse);
+        Page<Post> postPage;
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            postPage = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(
+                    keyword, keyword, sortedPageable
+            );
+        } else {
+            postPage = postRepository.findAll(sortedPageable);
+        }
+
+        return postPage.map(this::toResponse);
     }
 
     // 단일 조회
+    @Transactional
     public PostResponse getPost(Long id) {
-        return postRepository.findById(id)
-                .map(this::toResponse)
+        Post post = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("게시글을 찾을 수 없습니다."));
+
+        // 조회수 증가 로직
+        post.setViews(post.getViews() + 1);
+
+        return toResponse(post);
     }
 
     // 생성

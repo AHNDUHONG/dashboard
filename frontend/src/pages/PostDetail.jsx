@@ -16,6 +16,7 @@ export default function PostDetail() {
     });
 
     const getPost = () => {
+        console.log("🔍 getPost() 호출됨");
         axios
             .get(`${process.env.REACT_APP_API_URL}/posts/${id}`)
             .then((res) => {

@@ -7,6 +7,7 @@ export default function Home() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 10;
+    const [searchKeyword, setSearchKeyword] = useState("");
 
     const getPostList = () => {
         const token = localStorage.getItem("token");
@@ -15,6 +16,7 @@ export default function Home() {
                 params: {
                     page: currentPage - 1,
                     size: postsPerPage,
+                    keyword: searchKeyword,
                     sort: 'id,DESC'     // 'id' 필드를 기준으로 내림차순 정렬
                 },
                 headers: {
@@ -32,7 +34,7 @@ export default function Home() {
 
     useEffect(() => {
         getPostList();
-    }, [currentPage]);
+    }, [currentPage, searchKeyword]);
 
     const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
 
@@ -40,10 +42,40 @@ export default function Home() {
         setCurrentPage(pageNumber);
     };
 
+    const handleSearch = () => {
+        setCurrentPage(1);
+        getPostList();
+    };
+
 
     return (
         <div className="max-w-3xl mx-auto px-4 py-8">
             <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">게시글 목록</h1>
+
+            <div className="mb-6">
+                <input
+                    type="text"
+                    placeholder="검색어를 입력하세요"
+                    value={searchKeyword}
+                    onChange={(e) => setSearchKeyword(e.target.value)}
+                    className="w-full px-4 py-2 border rounded-lg shdaw-sm dark:bg-gray-700 dark:text-white"
+                />
+                <button
+                    onClick={handleSearch}    // 검색 시 페이지를 1로
+                    className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+                >
+                    검색
+                </button>
+                <button
+                    onClick={() => {
+                        setSearchKeyword("");
+                        setCurrentPage(1);
+                    }}
+                    className="ml-2 px-3 py-2 bg-gray-300 text-sm rounded hover:bg-gray-400"
+                >
+                    초기화
+                </button>
+            </div>
 
             <div className="space-y-6">
                 {posts.map((post) => (

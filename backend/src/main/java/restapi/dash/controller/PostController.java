@@ -21,12 +21,13 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    // 게시글 목록
+    // 게시글 목록 (페이지네이션 + 검색)
     @GetMapping
     public ResponseEntity<Page<PostResponse>> listPost(@RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "10") int size) {
+                                                       @RequestParam(defaultValue = "10") int size,
+                                                       @RequestParam(required = false) String keyword) {
         Pageable pageable = PageRequest.of(page, size);
-        return ResponseEntity.ok(postService.getPosts(pageable));
+        return ResponseEntity.ok(postService.getPosts(pageable, keyword));
     }
 
     // 게시글 조회
